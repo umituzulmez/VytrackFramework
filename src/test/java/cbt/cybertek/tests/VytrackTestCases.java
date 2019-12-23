@@ -1,15 +1,15 @@
 package cbt.cybertek.tests;
 
+import cbt.cybertek.pages.CalendarEventsPage;
+import cbt.cybertek.pages.CalenderEventsInfo;
 import cbt.cybertek.pages.DashboardPage;
 import cbt.cybertek.pages.LoginPage;
 import cbt.cybertek.utilities.BrowserUtils;
 import cbt.cybertek.utilities.ConfigurationReader;
-import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.testng.Assert;
 import org.testng.annotations.BeforeMethod;
 import org.testng.annotations.Test;
-import java.util.List;
 
 public class VytrackTestCases extends TestBase {
 
@@ -34,10 +34,9 @@ public class VytrackTestCases extends TestBase {
         4. Verify that page subtitle "Options" is displayed
         */
 
-        WebElement optionsText = driver.findElement(By.xpath("//div[@class='btn-group actions-group']/div"));
-        System.out.println("optionsText = " + optionsText.getText());
-
-        BrowserUtils.verifyElementDisplayed(optionsText);
+        CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
+        //extentLogger.info("Verify page subtitle Options is displayed");
+        BrowserUtils.verifyElementDisplayed(calendarEventsPage.options);
     }
 
     @Test
@@ -49,11 +48,9 @@ public class VytrackTestCases extends TestBase {
         4. Verify that page number is equals to "1"
          */
 
-        WebElement pageNumber = driver.findElement(By.xpath("//*[@data-bound-input-widget='no-name']"));
-        System.out.println(pageNumber.getAttribute("value"));
-        String actual = pageNumber.getAttribute("value");
+        String actual = new CalendarEventsPage().pageNumber.getAttribute("value");
         String expected = "1";
-
+        //extentLogger.info("Verify page number is 1");
         Assert.assertEquals(expected,actual,"verify page number is 1");
     }
 
@@ -66,11 +63,9 @@ public class VytrackTestCases extends TestBase {
         4. Verify that view per page number is equals to "25"
          */
 
-        WebElement viewPerPage = driver.findElement(By.xpath("(//div[@class='btn-group'])[2]"));
-        System.out.println(viewPerPage.getText());
-        String actual = viewPerPage.getText();
+        String actual = new CalendarEventsPage().viewPerPage.getText();
         String expected = "25";
-
+        //extentLogger.info("Verify view per page number is 25");
         Assert.assertEquals(actual,expected,"verify view per page number is 25");
     }
 
@@ -85,17 +80,16 @@ public class VytrackTestCases extends TestBase {
         Css selector: table > tr
          */
 
-        WebElement numberOfRecords = driver.findElement(By.xpath("//label[@class='dib'] [contains(text(),'records')]"));
-        System.out.println(numberOfRecords.getText());
-
-        String[] arr = numberOfRecords.getText().split(" ");
-        System.out.println(arr[2]);
-        int Records = Integer.parseInt(arr[2]);
-
-        int Rows = BrowserUtils.getElementsText(By.xpath("//tbody/tr")).size();
-        System.out.println("Rows = " + Rows);
-
-        Assert.assertEquals(Records,Rows,"verify the numbers of records and rows are equal");
+        CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
+        String[] arr = calendarEventsPage.totalRecords.getText().split(" ");
+        //System.out.println(arr[2]);
+        //extentLogger.info("get the number of records")
+        int numberOfRecords = Integer.parseInt(arr[2]);
+        //extentLogger.info("get the number of rows");
+        int numberOfRows = BrowserUtils.getElementsText(calendarEventsPage.rows).size();
+        //System.out.println("Rows = " + Rows);
+        //extentLogger.info("Verify the numbers of records and rows are equal");
+        Assert.assertEquals(numberOfRecords,numberOfRows,"verify the numbers of records and rows are equal");
     }
 
     @Test
@@ -108,13 +102,19 @@ public class VytrackTestCases extends TestBase {
         5. Verify that all calendar events were selected
          */
 
-        WebElement checkBox = driver.findElement(By.xpath("(//input[@type='checkbox'])[7]"));
-        BrowserUtils.selectCheckBox(checkBox,true);
+        CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
+        //extentLogger.info("Click the Top Check Box");
+        //calendarEventsPage.waitUntilLoaderScreenDisappear();
+        calendarEventsPage.topCheckBox.click();
+        //BrowserUtils.selectCheckBox(calendarEventsPage.topCheckBox,true);
 
-        List<WebElement> allCheckBoxes = driver.findElements(By.xpath("//table[@class='grid table-hover table table-bordered table-condensed']/tbody/tr"));
+        //extentLogger.info("get the numbers of all Check boxes");
+        //List<WebElement> allCheckBoxes = driver.findElements(By.xpath("//table[@class='grid table-hover table table-bordered table-condensed']/tbody/tr"));
+        int numOfAllCheckBoxes = calendarEventsPage.allCheckBoxes.size();
 
+        //extentLogger.info("get the number of selected check boxes")
         int counter = 0;
-        for (WebElement allCheckBox : allCheckBoxes) {
+        for (WebElement allCheckBox : calendarEventsPage.allCheckBoxes) {
 
             allCheckBox.getAttribute("class").contains("row-selected");
 
@@ -122,7 +122,9 @@ public class VytrackTestCases extends TestBase {
         }
 
         System.out.println("counter = " + counter);
-        Assert.assertEquals(counter,allCheckBoxes.size(),"verify all check boxes are selected");
+
+        //extentLogger.info("Verify all check boxes are selected");
+        Assert.assertEquals(counter,numOfAllCheckBoxes,"verify all check boxes are selected");
     }
 
     @Test
@@ -131,22 +133,22 @@ public class VytrackTestCases extends TestBase {
         1. Go to “https://qa1.vytrack.com/"
         2. Login as a store manager
         3. Navigate to “Activities -> Calendar Events”
-        4. Select “Testers meeting”
+        4. Select “Testers Meeting”
         5. Verify that following data is displayed:
          */
 
-        WebElement testersMeeting = driver.findElement(By.xpath("//div[@class='grid-container']//tbody//tr//td[contains(text(),'Testers Meeting')]"));
-        testersMeeting.click();
+        CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
+        //extentLogger.info("Click the Testers Meeting event");
+        //calendarEventsPage.waitUntilLoaderScreenDisappear();
+        calendarEventsPage.getEventTitle("Testers Meeting").click();
 
-        WebElement info = driver.findElement(By.xpath("//div[contains(text(),'Testers Meeting')]"));
-        System.out.println("info = " + info.getText());
-        String actual = info.getText();
+        //extentLogger.info("get the info of clicked eveent");
+        CalenderEventsInfo calenderEventsInfo = new CalenderEventsInfo();
+        String actual = calenderEventsInfo.infoText("Testers Meeting").getText();
         String expected = "Testers Meeting";
 
+        //extentLogger.info("Verify info is correct");
         Assert.assertEquals(actual,expected,"verify info is correct");
-
-
     }
-
 
 }
