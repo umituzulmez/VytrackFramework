@@ -16,12 +16,17 @@ public class VytrackTestCases extends TestBase {
     @BeforeMethod
     public void repeatingPart(){
 
+        extentLogger = report.createTest("VytrackTestCases 1to5");
         LoginPage loginPage = new LoginPage();
         String username = ConfigurationReader.get("storemanager_username");
         String password = ConfigurationReader.get("storemanager_password");
+        extentLogger.info("username: " + username);
+        extentLogger.info("password: " + password);
+        extentLogger.info("Login as a storemanager");
         loginPage.login(username,password);
 
         DashboardPage dashboardPage = new DashboardPage();
+        extentLogger.info("Navigate to Activities/Calendar Events module page");
         dashboardPage.navigateToModule("Activities","Calendar Events");
 
     }
@@ -35,7 +40,7 @@ public class VytrackTestCases extends TestBase {
         */
 
         CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
-        //extentLogger.info("Verify page subtitle Options is displayed");
+        extentLogger.info("Verify page subtitle Options is displayed");
         BrowserUtils.verifyElementDisplayed(calendarEventsPage.options);
     }
 
@@ -50,7 +55,7 @@ public class VytrackTestCases extends TestBase {
 
         String actual = new CalendarEventsPage().pageNumber.getAttribute("value");
         String expected = "1";
-        //extentLogger.info("Verify page number is 1");
+        extentLogger.info("Verify page number is 1");
         Assert.assertEquals(expected,actual,"verify page number is 1");
     }
 
@@ -65,7 +70,7 @@ public class VytrackTestCases extends TestBase {
 
         String actual = new CalendarEventsPage().viewPerPage.getText();
         String expected = "25";
-        //extentLogger.info("Verify view per page number is 25");
+        extentLogger.info("Verify view per page number is 25");
         Assert.assertEquals(actual,expected,"verify view per page number is 25");
     }
 
@@ -83,12 +88,12 @@ public class VytrackTestCases extends TestBase {
         CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
         String[] arr = calendarEventsPage.totalRecords.getText().split(" ");
         //System.out.println(arr[2]);
-        //extentLogger.info("get the number of records")
+        extentLogger.info("get the number of records");
         int numberOfRecords = Integer.parseInt(arr[2]);
-        //extentLogger.info("get the number of rows");
+        extentLogger.info("get the number of rows");
         int numberOfRows = BrowserUtils.getElementsText(calendarEventsPage.rows).size();
         //System.out.println("Rows = " + Rows);
-        //extentLogger.info("Verify the numbers of records and rows are equal");
+        extentLogger.info("Verify the numbers of records and rows are equal");
         Assert.assertEquals(numberOfRecords,numberOfRows,"verify the numbers of records and rows are equal");
     }
 
@@ -103,16 +108,16 @@ public class VytrackTestCases extends TestBase {
          */
 
         CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
-        //extentLogger.info("Click the Top Check Box");
+        extentLogger.info("Click the Top Check Box");
         //calendarEventsPage.waitUntilLoaderScreenDisappear();
         calendarEventsPage.topCheckBox.click();
         //BrowserUtils.selectCheckBox(calendarEventsPage.topCheckBox,true);
 
-        //extentLogger.info("get the numbers of all Check boxes");
+        extentLogger.info("get the numbers of all Check boxes");
         //List<WebElement> allCheckBoxes = driver.findElements(By.xpath("//table[@class='grid table-hover table table-bordered table-condensed']/tbody/tr"));
         int numOfAllCheckBoxes = calendarEventsPage.allCheckBoxes.size();
 
-        //extentLogger.info("get the number of selected check boxes")
+        extentLogger.info("get the number of selected check boxes");
         int counter = 0;
         for (WebElement allCheckBox : calendarEventsPage.allCheckBoxes) {
 
@@ -123,7 +128,7 @@ public class VytrackTestCases extends TestBase {
 
         System.out.println("counter = " + counter);
 
-        //extentLogger.info("Verify all check boxes are selected");
+        extentLogger.info("Verify all check boxes are selected");
         Assert.assertEquals(counter,numOfAllCheckBoxes,"verify all check boxes are selected");
     }
 
@@ -138,16 +143,16 @@ public class VytrackTestCases extends TestBase {
          */
 
         CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
-        //extentLogger.info("Click the Testers Meeting event");
-        //calendarEventsPage.waitUntilLoaderScreenDisappear();
+        extentLogger.info("Click the Testers Meeting event");
+        calendarEventsPage.waitUntilLoaderScreenDisappear();
         calendarEventsPage.getEventTitle("Testers Meeting").click();
 
-        //extentLogger.info("get the info of clicked eveent");
+        extentLogger.info("get the info of clicked eveent");
         CalenderEventsInfo calenderEventsInfo = new CalenderEventsInfo();
         String actual = calenderEventsInfo.infoText("Testers Meeting").getText();
         String expected = "Testers Meeting";
 
-        //extentLogger.info("Verify info is correct");
+        extentLogger.info("Verify info is correct");
         Assert.assertEquals(actual,expected,"verify info is correct");
     }
 
