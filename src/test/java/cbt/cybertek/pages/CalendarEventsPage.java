@@ -37,7 +37,7 @@ public class CalendarEventsPage extends BasePage {
 
     public List<WebElement> allCheckBoxes = Driver.get().findElements(By.xpath("//table//tbody/tr"));
 
-    public WebElement getEventTitle(String title){
+    public WebElement eventTitle(String title){
 
         String titleXpath = "//td[contains(text(),'" + title + "')] [@data-column-label='Title']";
         WebElement titleName = Driver.get().findElement(By.xpath(titleXpath));
@@ -45,6 +45,13 @@ public class CalendarEventsPage extends BasePage {
         return titleName;
     }
 
+    public WebElement threeDotsRelatedTitle(String title) {
 
+        String threeDotsXpath = "//td[contains(text(),'" + title + "')]/parent::*/td/div/div/a[@class='dropdown-toggle']";
+        WebElement threeDots = Driver.get().findElement(By.xpath(threeDotsXpath));
 
+        return threeDots;
+    }
+
+    public List<WebElement> optionsRelatedThreeDots = Driver.get().findElements(By.xpath("//td[contains(text(),'Testers meeting')]/parent::*/td/div/div/a[@class='dropdown-toggle']/following-sibling::*//li[@class='launcher-item']/a"));
 }

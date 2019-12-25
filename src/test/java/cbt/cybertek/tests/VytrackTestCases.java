@@ -145,7 +145,7 @@ public class VytrackTestCases extends TestBase {
         CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
         extentLogger.info("Click the Testers Meeting event");
         calendarEventsPage.waitUntilLoaderScreenDisappear();
-        calendarEventsPage.getEventTitle("Testers Meeting").click();
+        calendarEventsPage.eventTitle("Testers Meeting").click();
 
         extentLogger.info("get the info of clicked eveent");
         CalenderEventsInfo calenderEventsInfo = new CalenderEventsInfo();
