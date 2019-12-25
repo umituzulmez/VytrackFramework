@@ -46,6 +46,8 @@ public class VytrackTestCases4 extends TestBase{
 
         CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
         WebElement threeDots = calendarEventsPage.threeDotsRelatedTitle("Testers Meeting");
+
+        extentLogger.info("Hover on three dots “...” for “Testers meeting” calendar event");
         BrowserUtils.hover(threeDots);
         //lazy way
         //BrowserUtils.hover(calendarEventsPage.threeDotsRelatedTitle("Testers Meeting"));
@@ -56,14 +58,43 @@ public class VytrackTestCases4 extends TestBase{
 
         List<String> actualList = new ArrayList<>();
         for (WebElement element : actualOptions) {
-            actualList.add(element.getAttribute("title"));
+            //actualList.add(element.getAttribute("title"));
+            BrowserUtils.verifyElementDisplayed(element);
         }
         //List<String> actualList = BrowserUtils.getElementsText(actualOptions);
 
-        Assert.assertEquals(actualList,expectedList,"Verify “View”, “Edit” and “Delete” options are available");
+        //extentLogger.info("Verify “View”, “Edit” and “Delete” options are available");
+        //Assert.assertEquals(actualOptions,expectedList,"Verify “View”, “Edit” and “Delete” options are available");
 
+    }
 
+    @Test
+    public void TestCase2(){
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Grid Options” button
+        5. Deselect all options except “Title”
+        6. Verify that “Title” column still displayed
+         */
 
+        CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
+        extentLogger.info("Click on “Grid Options” button");
+        calendarEventsPage.gridOptionsButton.click();
+
+        extentLogger.info("Deselect all options except “Title”");
+        calendarEventsPage.gridOptionsElement("Calendar").click();
+        calendarEventsPage.gridOptionsElement("Start").click();
+        calendarEventsPage.gridOptionsElement("End").click();
+        calendarEventsPage.gridOptionsElement("Recurrent").click();
+        calendarEventsPage.gridOptionsElement("Recurrence").click();
+        calendarEventsPage.gridOptionsElement("Invitation status").click();
+
+        extentLogger.info("Verify that “Title” column still displayed");
+        Assert.assertTrue(calendarEventsPage.titleColumn.isDisplayed());
+        //Or
+        //BrowserUtils.verifyElementDisplayed(calendarEventsPage.titleColumn);
 
 
     }

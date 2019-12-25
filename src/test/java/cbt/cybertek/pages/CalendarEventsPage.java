@@ -35,7 +35,15 @@ public class CalendarEventsPage extends BasePage {
     @FindBy(xpath = "//table//tr//button/input")
     public WebElement topCheckBox;
 
+    @FindBy(xpath = "//a[@title='Grid Settings']")
+    public WebElement gridOptionsButton;
+
+    @FindBy(xpath = "//a/span[contains(text(),'Title')]")
+    public WebElement titleColumn;
+
     public List<WebElement> allCheckBoxes = Driver.get().findElements(By.xpath("//table//tbody/tr"));
+
+    public List<WebElement> optionsRelatedThreeDots = Driver.get().findElements(By.xpath("//td[contains(text(),'Testers meeting')]/parent::*/td/div/div/a[@class='dropdown-toggle']/following-sibling::*//li/a[@title]"));
 
     public WebElement eventTitle(String title){
 
@@ -53,5 +61,12 @@ public class CalendarEventsPage extends BasePage {
         return threeDots;
     }
 
-    public List<WebElement> optionsRelatedThreeDots = Driver.get().findElements(By.xpath("//td[contains(text(),'Testers meeting')]/parent::*/td/div/div/a[@class='dropdown-toggle']/following-sibling::*//li[@class='launcher-item']/a"));
+    public WebElement gridOptionsElement(String name){
+
+        String gridOptionXpath = "//tbody[@class='ui-sortable']/tr//label[contains(text(),'" + name + "')]";
+        WebElement gridOptionsElement = Driver.get().findElement(By.xpath(gridOptionXpath));
+
+        return gridOptionsElement;
+    }
+
 }
