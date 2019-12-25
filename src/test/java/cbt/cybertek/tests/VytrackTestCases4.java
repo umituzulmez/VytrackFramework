@@ -35,7 +35,7 @@ public class VytrackTestCases4 extends TestBase{
     }
 
     @Test
-    public void TestCase1() throws InterruptedException {
+    public void TestCase1() {
         /*
         1. Go to “https://qa1.vytrack.com/"
         2. Login as a store manager
