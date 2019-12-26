@@ -58,6 +58,9 @@ public class CreateCalendarEventsPage extends BasePage {
     @FindBy(css = ".btn-success.btn.dropdown-toggle")
     public WebElement expandButtonOfSaveAndClose;
 
+    @FindBy(xpath = "//a[contains(text(),'Cancel')]")
+    public WebElement cancelButton;
+
     public List<WebElement> listOfSaveAndClose = Driver.get().findElements(By.xpath("//ul[@data-options]//button"));
 
     public Select repeatOptionsList(){

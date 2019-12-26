@@ -36,7 +36,7 @@ public class VytrackTestCases4 extends TestBase{
     }
 
     @Test
-    public void TestCase1() {
+    public void TestCase1(){
         /*
         1. Go to “https://qa1.vytrack.com/"
         2. Login as a store manager
@@ -132,5 +132,31 @@ public class VytrackTestCases4 extends TestBase{
 
         extentLogger.info("Verify “Save And Close”, “Save And New” and “Save” options are available");
         Assert.assertEquals(expectedList,actualList,"Verify “Save And Close”, “Save And New” and “Save” options are available");
+    }
+
+    @Test
+    public void testCase4(){
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Then, click on “Cancel” button
+        6. Verify that “All Calendar Events” page subtitle is displayed
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
+        calendarEventsPage.createCalendarEvent.click();
+
+        extentLogger.info("Click on “Cancel” button");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        calendarEventsPage.waitUntilLoaderScreenDisappear();
+        createCalendarEventsPage.cancelButton.click();
+
+        extentLogger.info("Verify “All Calendar Events” page subtitle is displayed");
+        String expected = "All Calendar Events";
+        String actual = calendarEventsPage.getPageSubTitle();
+        Assert.assertEquals(expected,actual,"Verify “All Calendar Events” page subtitle is displayed");
     }
 }
