@@ -1,10 +1,13 @@
 package cbt.cybertek.pages;
 
 import cbt.cybertek.utilities.Driver;
+import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 import org.openqa.selenium.support.ui.Select;
+
+import java.util.List;
 
 public class CreateCalendarEventsPage extends BasePage {
 
@@ -18,6 +21,7 @@ public class CreateCalendarEventsPage extends BasePage {
 
     @FindBy(css = "[id^='recurrence-repeats-view']")
     public WebElement repeatOptions;
+
     @FindBy(className = "select2-chosen")
     public WebElement selectedOwner;
 
@@ -26,6 +30,7 @@ public class CreateCalendarEventsPage extends BasePage {
 
     @FindBy(css = "[id^='date_selector_oro_calendar_event_form_start']")
     public WebElement startDate;
+
     @FindBy(css = "[id^='date_selector_oro_calendar_event_form_end']")
     public WebElement endDate;
 
@@ -49,6 +54,11 @@ public class CreateCalendarEventsPage extends BasePage {
 
     @FindBy(xpath = "(//input[@type='radio'])[5]")
     public WebElement by;
+
+    @FindBy(css = ".btn-success.btn.dropdown-toggle")
+    public WebElement expandButtonOfSaveAndClose;
+
+    public List<WebElement> listOfSaveAndClose = Driver.get().findElements(By.xpath("//ul[@data-options]//button"));
 
     public Select repeatOptionsList(){
 

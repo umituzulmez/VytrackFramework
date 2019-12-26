@@ -1,6 +1,7 @@
 package cbt.cybertek.tests;
 
 import cbt.cybertek.pages.CalendarEventsPage;
+import cbt.cybertek.pages.CreateCalendarEventsPage;
 import cbt.cybertek.pages.DashboardPage;
 import cbt.cybertek.pages.LoginPage;
 import cbt.cybertek.utilities.BrowserUtils;
@@ -79,6 +80,7 @@ public class VytrackTestCases4 extends TestBase{
         6. Verify that “Title” column still displayed
          */
 
+
         CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
         extentLogger.info("Click on “Grid Options” button");
         calendarEventsPage.gridOptionsButton.click();
@@ -96,6 +98,39 @@ public class VytrackTestCases4 extends TestBase{
         //Or
         //BrowserUtils.verifyElementDisplayed(calendarEventsPage.titleColumn);
 
+    }
 
+    @Test
+    public void testCase3(){
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Expand “Save And Close” menu
+        6. Verify that “Save And Close”, “Save And New” and “Save” options are available
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        new CalendarEventsPage().createCalendarEvent.click();
+
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        extentLogger.info("Expand “Save And Close” Menu");
+        createCalendarEventsPage.expandButtonOfSaveAndClose.click();
+
+        List<String> expectedList = Arrays.asList("Save And Close","Save And New","Save");
+
+        List<WebElement> actualElements = createCalendarEventsPage.listOfSaveAndClose;
+
+        extentLogger.info("get the text of listed elements");
+        List<String> actualList = new ArrayList<>();
+        for (WebElement element : actualElements) {
+
+            actualList.add(element.getText());
+        }
+
+        extentLogger.info("Verify “Save And Close”, “Save And New” and “Save” options are available");
+        Assert.assertEquals(expectedList,actualList,"Verify “Save And Close”, “Save And New” and “Save” options are available");
     }
 }

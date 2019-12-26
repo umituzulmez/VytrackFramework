@@ -1,7 +1,7 @@
 package cbt.cybertek.tests;
 
 import cbt.cybertek.pages.CalendarEventsPage;
-import cbt.cybertek.pages.CalenderEventsInfo;
+import cbt.cybertek.pages.CalenderEventsInfoPage;
 import cbt.cybertek.pages.DashboardPage;
 import cbt.cybertek.pages.LoginPage;
 import cbt.cybertek.utilities.BrowserUtils;
@@ -147,8 +147,8 @@ public class VytrackTestCases extends TestBase {
         calendarEventsPage.waitUntilLoaderScreenDisappear();
         calendarEventsPage.eventTitle("Testers Meeting").click();
 
-        extentLogger.info("get the info of clicked eveent");
-        CalenderEventsInfo calenderEventsInfo = new CalenderEventsInfo();
+        extentLogger.info("get the info of clicked event");
+        CalenderEventsInfoPage calenderEventsInfo = new CalenderEventsInfoPage();
         String actual = calenderEventsInfo.infoText("Testers Meeting").getText();
         String expected = "Testers Meeting";
 

@@ -4,7 +4,7 @@ import cbt.cybertek.utilities.Driver;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebElement;
 
-public class CalenderEventsInfo extends BasePage{
+public class CalenderEventsInfoPage extends BasePage{
 
     public WebElement infoText(String text){
 
