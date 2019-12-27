@@ -159,4 +159,46 @@ public class VytrackTestCases4 extends TestBase{
         String actual = calendarEventsPage.getPageSubTitle();
         Assert.assertEquals(expected,actual,"Verify “All Calendar Events” page subtitle is displayed");
     }
+
+    @Test
+    public void testCase5() {
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Verify that difference between end and start time is exactly 1 hour
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
+        calendarEventsPage.createCalendarEvent.click();
+
+        extentLogger.info("Find start time");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        String startTimeValue = createCalendarEventsPage.startTimeValue.getAttribute("value");
+        String[] startArr1 = startTimeValue.split("T");
+        String startTime = startArr1[1].replace("Z","");
+        System.out.println("startTime = " + startTime);
+        String[] startArr2 = startTime.split(":");
+        int startHour = Integer.parseInt(startArr2[0]);
+        int startMinute = Integer.parseInt(startArr2[1]);
+        int startSecond = Integer.parseInt(startArr2[2]);
+
+        extentLogger.info("Fİnd end time");
+        String endTimeValue = createCalendarEventsPage.endTimeValue.getAttribute("value");
+        String[] endArr1 = endTimeValue.split("T");
+        String endTime = endArr1[1].replace("Z","");
+        System.out.println("endTime = " + endTime);
+        String[] endArr2 = endTime.split(":");
+        int endHour = Integer.parseInt(endArr2[0]);
+        int endMinute = Integer.parseInt(endArr2[1]);
+        int endSecond = Integer.parseInt(endArr2[2]);
+        int diffOfHour = endHour-startHour;
+
+        String diffEndStartTime = ((endHour-startHour) + " hour , " + (endMinute-startMinute) + " minute , " + (endSecond-startSecond) + " second.");
+        extentLogger.info("Verify difference between end and start time is exactly 1 hour");
+        Assert.assertEquals(diffOfHour,1,"Verify difference between end and start time is exactly 1 hour");
+
+    }
 }

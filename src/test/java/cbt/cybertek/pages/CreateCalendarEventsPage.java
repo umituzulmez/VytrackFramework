@@ -37,8 +37,14 @@ public class CreateCalendarEventsPage extends BasePage {
     @FindBy(css = "[id^='time_selector_oro_calendar_event_form_start']")
     public WebElement startTime;
 
+    @FindBy(xpath = "(//span[@style='display:none']/input)[1]")
+    public WebElement startTimeValue;
+
     @FindBy(css = "[id^='time_selector_oro_calendar_event_form_end']")
     public WebElement endTime;
+
+    @FindBy(xpath = "(//span[@style='display:none']/input)[2]")
+    public WebElement endTimeValue;
 
     @FindBy(xpath = "(//input[@type='radio'])[1]")
     public WebElement days;
