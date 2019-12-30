@@ -126,7 +126,6 @@ public class VytrackTestCases4 extends TestBase{
         extentLogger.info("get the text of listed elements");
         List<String> actualList = new ArrayList<>();
         for (WebElement element : actualElements) {
-
             actualList.add(element.getText());
         }
 
@@ -176,29 +175,183 @@ public class VytrackTestCases4 extends TestBase{
 
         extentLogger.info("Find start time");
         CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
-        String startTimeValue = createCalendarEventsPage.startTimeValue.getAttribute("value");
-        String[] startArr1 = startTimeValue.split("T");
-        String startTime = startArr1[1].replace("Z","");
-        System.out.println("startTime = " + startTime);
-        String[] startArr2 = startTime.split(":");
-        int startHour = Integer.parseInt(startArr2[0]);
-        int startMinute = Integer.parseInt(startArr2[1]);
-        int startSecond = Integer.parseInt(startArr2[2]);
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        String start = createCalendarEventsPage.startTimeText();
+        String end = createCalendarEventsPage.endTimeText();
+        int startTime = Integer.parseInt(start.substring(0,2));
+        int endTime = Integer.parseInt(end.substring(0,2));
 
-        extentLogger.info("Fİnd end time");
-        String endTimeValue = createCalendarEventsPage.endTimeValue.getAttribute("value");
-        String[] endArr1 = endTimeValue.split("T");
-        String endTime = endArr1[1].replace("Z","");
-        System.out.println("endTime = " + endTime);
-        String[] endArr2 = endTime.split(":");
-        int endHour = Integer.parseInt(endArr2[0]);
-        int endMinute = Integer.parseInt(endArr2[1]);
-        int endSecond = Integer.parseInt(endArr2[2]);
-        int diffOfHour = endHour-startHour;
-
-        String diffEndStartTime = ((endHour-startHour) + " hour , " + (endMinute-startMinute) + " minute , " + (endSecond-startSecond) + " second.");
         extentLogger.info("Verify difference between end and start time is exactly 1 hour");
-        Assert.assertEquals(diffOfHour,1,"Verify difference between end and start time is exactly 1 hour");
+        Assert.assertTrue(endTime-startTime==1,"Verify difference between end and start time is exactly 1 hour");
 
+    }
+
+    @Test
+    public void tesCase6() {
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Select “9:00 PM” as a start time
+        6. Verify that end time is equals to “10:00 PM”
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        CalendarEventsPage calendarEventsPage = new CalendarEventsPage();
+        calendarEventsPage.createCalendarEvent.click();
+
+        extentLogger.info("Select “9:00 PM” as a start time");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        createCalendarEventsPage.startTimeBox.click();
+        createCalendarEventsPage.selectTime("9:00 PM").click();
+
+        extentLogger.info("Verify end time equals to “10:00 PM”");
+        createCalendarEventsPage.endTimeBox.click();
+        String endTime = createCalendarEventsPage.getSelectedEndTime.getText();
+
+        Assert.assertEquals(endTime,"10:00 PM","Verify end time equals to “10:00 PM”");
+
+    }
+
+    @Test
+    public void testCase7(){
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Select “All-Day Event” checkbox
+        6. Verify that “All-Day Event” checkbox is selected
+        7. Verify that start and end time input boxes are not displayed
+        8. Verify that start and end date input boxes are displayed
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        new CalendarEventsPage().createCalendarEvent.click();
+
+        extentLogger.info("Select “All-Day Event” checkbox");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        createCalendarEventsPage.allDayEventCheckBox.click();
+
+        extentLogger.info("Verify “All-Day Event” checkbox is selected");
+        Assert.assertTrue(createCalendarEventsPage.allDayEventCheckBox.isSelected(),"Verify “All-Day Event” checkbox is selected");
+
+        extentLogger.info("Verify start time input box is not displayed");
+        Assert.assertFalse(createCalendarEventsPage.startTimeBox.isDisplayed(),"Verify start time input box is not displayed");
+
+        extentLogger.info("Verify end time input box is not displayed");
+        Assert.assertFalse(createCalendarEventsPage.endTimeBox.isDisplayed(),"Verify end time input box is not displayed");
+
+        extentLogger.info("Verify start date input box is displayed");
+        Assert.assertTrue(createCalendarEventsPage.startDate.isDisplayed(),"Verify start date input box is displayed");
+
+        extentLogger.info("Verify start date input box is displayed");
+        Assert.assertTrue(createCalendarEventsPage.endDate.isDisplayed(),"Verify start date input box is displayed");
+
+    }
+
+    @Test
+    public void testCase8() {
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Select “Repeat” checkbox
+        6. Verify that “Repeat” checkbox is selected
+        7. Verify that “Daily” is selected by default and following options are available in   “Repeats” drop-down:
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        new CalendarEventsPage().createCalendarEvent.click();
+
+        extentLogger.info("Select “Repeat” checkbox");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        createCalendarEventsPage.repeat.click();
+
+        extentLogger.info("Verify “Repeat” checkbox is selected");
+        Assert.assertTrue(createCalendarEventsPage.repeat.isSelected(),"Verify “Repeat” checkbox is selected");
+
+        extentLogger.info("Verify “Daily” is selected by default");
+        String defaultSelected = createCalendarEventsPage.selectedRepeatOption.getText();
+        Assert.assertEquals(defaultSelected,"Daily","Verify “Daily” is selected by default");
+
+        extentLogger.info("Verify following options are available in “Repeats” drop-down");
+        List<String> expectedList = Arrays.asList("Daily","Weekly","Monthly","Yearly");
+        List<WebElement> actualOptions = createCalendarEventsPage.repeatOptionsList().getOptions();
+        List<String> actualList = BrowserUtils.getElementsText(actualOptions);
+        Assert.assertEquals(actualList,expectedList,"Verify following options are available in “Repeats” drop-down");
+    }
+
+    @Test
+    public void testCase9() {
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Select “Repeat” checkbox
+        6. Verify that “Repeat” checkbox is selected
+        7. Verify that “Repeat Every” radio button is selected
+        8. Verify that “Never” radio button is selected as an “Ends” option.
+        9. Verify that following message as a summary is displayed: “Summary: Daily every 1 day”
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        new CalendarEventsPage().createCalendarEvent.click();
+
+        extentLogger.info("Select “Repeat” checkbox");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        createCalendarEventsPage.repeat.click();
+
+        extentLogger.info("Verify “Repeat” checkbox is selected");
+        Assert.assertTrue(createCalendarEventsPage.repeat.isSelected(),"Verify “Repeat” checkbox is selected");
+
+        extentLogger.info("Verify “Repeat Every” radio button is selected");
+        Assert.assertTrue(createCalendarEventsPage.days.isSelected(),"Verify “Repeat Every” radio button is selected");
+
+        extentLogger.info("Verify “Never” radio button is selected as an “Ends” option");
+        Assert.assertTrue(createCalendarEventsPage.never.isSelected(),"Verify “Never” radio button is selected as an “Ends” option");
+
+        extentLogger.info("Verify following message as a summary is displayed: “Summary: Daily every 1 day”");
+        String expectedMessage = "Daily every 1 day";
+        String actualMessage = createCalendarEventsPage.summaryMessage.getText();
+        Assert.assertEquals(actualMessage,expectedMessage,"Verify message is displayed: “Summary: Daily every 1 day”");
+    }
+
+    @Test
+    public void testCase10() throws InterruptedException {
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Select “Repeat” checkbox
+        6. Select “After 10 occurrences” as an “Ends” option.
+        7. Verify that following message as a summary is displayed: “Summary: Daily every 1 day, end after 10 occurrences”
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        new CalendarEventsPage().createCalendarEvent.click();
+
+        extentLogger.info("Select “Repeat” checkbox");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        createCalendarEventsPage.repeat.click();
+
+        extentLogger.info("Select “After 10 occurrences” as an “Ends” option");
+        createCalendarEventsPage.after.click();
+        createCalendarEventsPage.afterOccurrencesBox.sendKeys("10");
+        createCalendarEventsPage.afterOccurrencesBox.click();
+
+        extentLogger.info("Verify following message as a summary is displayed: “Summary: Daily every 1 day, end after 10 occurrences”");
+        String expectedMessage = "Daily every 1 day, end after 10 occurrences";
+        String actualMessage = createCalendarEventsPage.summaryMessage.getText() + createCalendarEventsPage.summaryMessage2.getText();
+        Assert.assertEquals(expectedMessage,actualMessage,"Verify message is displayed: “Summary: Daily every 1 day, end after 10 occurrences");
     }
 }
