@@ -73,6 +73,18 @@ public class CreateCalendarEventsPage extends BasePage {
     @FindBy(xpath = "(//input[@type='radio'])[5]")
     public WebElement by;
 
+    @FindBy(css = ".ui-datepicker-year")
+    public WebElement yearOptions;
+
+    @FindBy(css = ".ui-datepicker-month")
+    public WebElement monthOptions;
+
+    @FindBy(xpath = "//input[@class='datepicker-input hasDatepicker']")
+    public WebElement chooseADateBox;
+
+    @FindBy(xpath = "//input[@class=\'timepicker-input ui-timepicker-input\']")
+    public WebElement chooseTimeBox;
+
     @FindBy(xpath = "//div[@data-name='recurrence-summary']/div/span")
     public WebElement summaryMessage;
 
@@ -119,6 +131,33 @@ public class CreateCalendarEventsPage extends BasePage {
         WebElement clockTime = Driver.get().findElement(By.xpath(clockXpath));
 
         return clockTime;
+    }
+
+    public Select yearOptionsList(){
+
+        return new Select(yearOptions);
+    }
+
+    public Select monthOptionsList(){
+
+        return new Select(monthOptions);
+    }
+
+    public WebElement selectDayFromTable(String day){
+
+        String xpathOfDay = "//table/tbody//td/a[(text()='" + day + "')]";
+        WebElement selectedDay = Driver.get().findElement(By.xpath(xpathOfDay));
+
+        return selectedDay;
+    }
+
+    public WebElement selectDayRepeatOn(String dayName){
+
+        dayName = dayName.toLowerCase();
+        String xpathOfDay = "//input[@value='" + dayName + "']";
+        WebElement dayOfRepeat = Driver.get().findElement(By.xpath(xpathOfDay));
+
+        return dayOfRepeat;
     }
 
 }

@@ -354,4 +354,79 @@ public class VytrackTestCases4 extends TestBase{
         String actualMessage = createCalendarEventsPage.summaryMessage.getText() + createCalendarEventsPage.summaryMessage2.getText();
         Assert.assertEquals(expectedMessage,actualMessage,"Verify message is displayed: “Summary: Daily every 1 day, end after 10 occurrences");
     }
+
+    @Test
+    public void testCase11() throws InterruptedException {
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Select “Repeat” checkbox
+        6. Select “By Nov 18, 2021” as an “Ends” option.
+        7. Verify that following message as a summary is displayed: “Summary: Daily every 1 day, end by Nov 18, 2021”
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        new CalendarEventsPage().createCalendarEvent.click();
+
+        extentLogger.info("Select “Repeat” checkbox");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        createCalendarEventsPage.repeat.click();
+
+        extentLogger.info("Select “By Nov 18, 2021” as an “Ends” option");
+        createCalendarEventsPage.by.click();
+        createCalendarEventsPage.chooseADateBox.click();
+        createCalendarEventsPage.yearOptionsList().selectByVisibleText("2021");
+        createCalendarEventsPage.monthOptionsList().selectByVisibleText("Nov");
+        createCalendarEventsPage.selectDayFromTable("18").click();
+
+        extentLogger.info("Verify message as a summary is displayed: “Summary: Daily every 1 day, end by Nov 18, 2021”");
+        String expectedMessage = "Daily every 1 day, end by Nov 18, 2021";
+        String actualMessage = createCalendarEventsPage.summaryMessage.getText() + createCalendarEventsPage.summaryMessage2.getText();
+        Assert.assertEquals(actualMessage,expectedMessage,"Verify message as a summary is displayed: “Summary: Daily every 1 day, end by Nov 18, 2021”");
+    }
+
+    @Test
+    public void testCAse12() throws InterruptedException {
+        /*
+        1. Go to “https://qa1.vytrack.com/"
+        2. Login as a store manager
+        3. Navigate to “Activities -> Calendar Events”
+        4. Click on “Create Calendar Event” button
+        5. Select “Repeat” checkbox
+        6. Select “Weekly” options as a “Repeat” option
+        7. Select “Monday and Friday” options as a “Repeat On” options
+        8. Verify that “Monday and Friday” options are selected
+        9. Verify that following message as a summary is displayed: “Summary: Weekly every 1 week on Monday, Friday”
+         */
+
+        extentLogger.info("Click on “Create Calendar Event” button");
+        new CalendarEventsPage().createCalendarEvent.click();
+
+        extentLogger.info("Select “Repeat” checkbox");
+        CreateCalendarEventsPage createCalendarEventsPage = new CreateCalendarEventsPage();
+        createCalendarEventsPage.waitUntilLoaderScreenDisappear();
+        createCalendarEventsPage.repeat.click();
+
+        extentLogger.info("Select “Weekly” options as a “Repeat” option");
+        createCalendarEventsPage.repeatOptions.click();
+        createCalendarEventsPage.repeatOptionsList().selectByVisibleText("Weekly");
+
+        extentLogger.info("Select “Monday and Friday” options as a “Repeat On” options");
+        createCalendarEventsPage.selectDayRepeatOn("Monday").click();
+        createCalendarEventsPage.selectDayRepeatOn("FRIDAY").click();
+
+        extentLogger.info("Verify “Monday and Friday” options are selected");
+        Assert.assertTrue(createCalendarEventsPage.selectDayRepeatOn("monday").isSelected(),"Verify “Monday” is selected");
+        Assert.assertTrue(createCalendarEventsPage.selectDayRepeatOn("FRIDAY").isSelected(),"Verify “ Friday” is selected");
+
+        extentLogger.info("Verify message as a summary is displayed: “Summary: Weekly every 1 week on Monday, Friday”");
+        String expectedMessage = "Weekly every 1 week on Monday, Friday";
+        String actualMessage = createCalendarEventsPage.summaryMessage.getText();
+        Assert.assertEquals(actualMessage,expectedMessage,"Verify message as a summary is displayed: “Summary: Weekly every 1 week on Monday, Friday”");
+    }
+
+
 }
