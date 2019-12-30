@@ -240,6 +240,7 @@ public class VytrackTestCases4 extends TestBase{
         Assert.assertTrue(createCalendarEventsPage.allDayEventCheckBox.isSelected(),"Verify “All-Day Event” checkbox is selected");
 
         extentLogger.info("Verify start time input box is not displayed");
+        BrowserUtils.waitFor(1);
         Assert.assertFalse(createCalendarEventsPage.startTimeBox.isDisplayed(),"Verify start time input box is not displayed");
 
         extentLogger.info("Verify end time input box is not displayed");
